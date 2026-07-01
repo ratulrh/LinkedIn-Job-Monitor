@@ -1,0 +1,142 @@
+{
+  "name": "LinkedIn Job finder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -352,
+        16
+      ],
+      "id": "dc99ccc8-253e-435d-9845-1b261cd2b064",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apify.com/v2/datasets/gcKHuiZvrfF787Fdz/items?token=apify_api_TefUk6rZTlcbGvBJM99pJpo7y8j42c23s6pV",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -144,
+        16
+      ],
+      "id": "2dd89743-2914-421f-99de-a33fcfa1b748",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "215470f6-f60b-43ac-bf5f-315c726bc1d4",
+              "leftValue": "={{ $json.skills[5] }}",
+              "rightValue": "Django",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        64,
+        16
+      ],
+      "id": "49708784-a0ac-4063-bd74-f4910bd34bd9",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "chatId": "6454969225",
+        "text": "={{ $json.jobDescription }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        -80
+      ],
+      "id": "d08a0fda-41ed-4399-9c83-86ac9e622cff",
+      "name": "Send a text message",
+      "webhookId": "481f397a-8c3a-4b9a-8576-d9aea644a92e",
+      "credentials": {
+        "telegramApi": {
+          "id": "hHhCN2guxh85tAG2",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "14e394a1-fdd9-413a-b67b-d6d7da1c0247",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a4ae2baa8efa543760965a892668eeca9af9a31b03b47c80608f247acee743d5"
+  },
+  "nodeGroups": [],
+  "id": "hGdwCSoCO9DKHIAS",
+  "tags": []
+}
